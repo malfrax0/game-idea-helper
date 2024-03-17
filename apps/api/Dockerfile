@@ -14,11 +14,16 @@ WORKDIR /app
 RUN addgroup --system api && \
           adduser --system -G api api
 
-COPY dist/apps/api api
+COPY dist/apps/api .
+COPY prisma ./prisma
 RUN chown -R api:api .
+RUN npm i -g prisma
+RUN prisma generate
+
+RUN touch .env
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix api --omit=dev -f install
+RUN npm --omit=dev -f install
 
-CMD [ "node", "api" ]
+CMD [ "node", "." ]
