@@ -1,7 +1,7 @@
 version: '3'
 services:
-  postgres:
-    container_name: postgres
+  game-idea-helper-postgres:
+    container_name: game-idea-helper-postgres
     image: postgres
     ports:
       - 5433:5432
@@ -12,24 +12,24 @@ services:
       POSTGRES_DB: app
     volumes:
       - ../apps/postgres:/var/lib/postgresql/data
-  api:
-    container_name: api
-    image: api
+  game-idea-helper-api:
+    container_name: game-idea-helper-api
+    image: game-idea-helper-api
     depends_on:
-      - postgres
+      - game-idea-helper-postgres
     ports:
-      - 8001:3000
+      - 8002:3000
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app?schema=public
+      - DATABASE_URL=postgresql://postgres:postgres@game-idea-helper-postgres:5432/app?schema=public
       - API_PORT=3000
-  web:
-    container_name: web
-    image: web
+  game-idea-helper-web:
+    container_name: game-idea-helper-web
+    image: game-idea-helper-web
     depends_on:
-      - postgres
-      - api
+      - game-idea-helper-postgres
+      - game-idea-helper-api
     ports:
-      - 3042:80
+      - 3041:80
 networks:
   default:
     driver: bridge

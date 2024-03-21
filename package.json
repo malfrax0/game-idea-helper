@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "p:generate": "prisma generate",
+    "p:migrate:dev": "prisma migrate dev && prisma db push",
+    "db:update": "npm run p:generate && npm run p:migrate:dev && npm run codegen"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +35,8 @@
     "react-dom": "18.2.0",
     "react-dotenv": "^0.1.3",
     "react-router-dom": "6.11.2",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "11.11.0",

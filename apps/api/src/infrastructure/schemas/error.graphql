@@ -1,0 +1,15 @@
+
+type BaseError {
+    code: String!
+    message: String!
+}
+
+type BadRequestError {
+    code: String!
+    message: String!
+}
+
+type NotFoundError {
+    code: String!
+    message: String!
+}

@@ -1,9 +1,11 @@
 import { mergeResolvers } from "@graphql-tools/merge";
-import health from "./health.resolver";
+import healthResolver from "./health.resolver";
+import themeResolver from "./theme.resolver";
 
 export const getResolvers = () => {
     return mergeResolvers([
-        health
+        healthResolver,
+        themeResolver
     ])
 }
 

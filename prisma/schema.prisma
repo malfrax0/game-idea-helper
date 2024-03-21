@@ -18,3 +18,9 @@ model Metadata {
   key String @unique
   value String
 }
+
+model Theme {
+  id Int @id @default(autoincrement())
+  theme String @unique
+  active Boolean
+}

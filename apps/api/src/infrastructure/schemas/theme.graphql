@@ -1,0 +1,59 @@
+
+type Theme {
+    id: ID!
+    theme: String!
+    active: Boolean!
+}
+
+type Query {
+    themes: ThemesResult
+    randomThemes(input: RandomThemeWhereInput!): RandomThemesResult
+}
+
+type Mutation {
+    createTheme(data: CreateThemeInput!): CreateThemeResultSuccess
+    updateTheme(where: ThemeWhereInput!, data: UpdateThemeInput!): UpdateThemeResultSuccess
+}
+
+input ThemeWhereInput {
+    id: ID!
+}
+
+input RandomThemeWhereInput {
+    amount: Int!
+}
+
+input CreateThemeInput {
+    theme: String!
+}
+
+input UpdateThemeInput {
+    theme: String
+    active: Boolean
+}
+
+type CreateThemeResultSuccess {
+    theme: Theme!
+}
+
+type UpdateThemeResultSuccess {
+    theme: Theme!
+}
+
+type ThemesResultSuccess {
+    themes: [Theme!]!
+}
+
+type ThemeResultSuccess {
+    theme: Theme!
+}
+
+type RandomThemesResultSuccess {
+    themes: [Theme!]!
+}
+
+union ThemeResult = ThemeResultSuccess | NotFoundError | BaseError
+union ThemesResult = ThemesResultSuccess | BaseError
+union CreateThemeResult = CreateThemeResultSuccess | BadRequestError | BaseError
+union UpdateThemeResult = UpdateThemeResultSuccess | BadRequestError | NotFoundError | BaseError
+union RandomThemesResult = RandomThemesResultSuccess | BaseError

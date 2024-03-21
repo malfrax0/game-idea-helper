@@ -14,7 +14,7 @@ const theme = createTheme({
 })
 
 const client = new ApolloClient({
-  uri: "http://localhost:8001/graphql",
+  uri: "http://localhost:8002/graphql",
   cache: new InMemoryCache()
 })
 
