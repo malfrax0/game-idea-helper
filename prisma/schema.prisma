@@ -14,13 +14,132 @@ datasource db {
 }
 
 model Metadata {
+  // Identity
   id  Int @id @default(autoincrement())
   key String @unique
   value String
 }
 
 model Theme {
+  // Identity
   id Int @id @default(autoincrement())
+
+  // Fields
   theme String @unique
-  active Boolean
+  active Boolean @default(true)
+
+  // Relations
+  spaces GameSpace[]
+}
+
+model CreationSpace {
+  // Identity
+  id Int @id @default(autoincrement())
+  // Fields
+  creationDate DateTime
+  color String?
+
+  // Relations
+  spaces GameSpace[]
+  ideaTags IdeaTags[]
+  taskTags TaskTags[]
+}
+
+model GameSpace {
+  // Identity
+  id Int @id @default(autoincrement())
+
+  // Fields
+  rejected Boolean @default(false)
+
+  // Relations
+  themeId Int
+  theme Theme @relation(fields: [themeId], references: [id], onDelete: Cascade)
+  creationSpaceId Int
+  creationSpace CreationSpace @relation(fields: [creationSpaceId], references: [id], onDelete: Cascade)
+  ideas Idea[]
+  tasks Task[]
+}
+
+model IdeaTags {
+  // Identity
+  id Int @id @default(autoincrement())
+  
+  // Fields
+  tag String
+  color String?
+
+  // Relations
+  creationSpaceId Int?
+  creationSpace CreationSpace? @relation(fields: [creationSpaceId], references: [id], onDelete: Cascade)
+  
+  // Constraints
+  @@unique([creationSpaceId, tag])
+}
+
+model TaskTags {
+  // Identity
+  id Int @id @default(autoincrement())
+  
+  // Fields
+  tag String
+  color String?
+
+  // Relations
+  creationSpaceId Int?
+  creationSpace CreationSpace? @relation(fields: [creationSpaceId], references: [id], onDelete: Cascade)
+  
+  // Constraints
+  @@unique([creationSpaceId, tag])
+}
+
+enum IdeaCategory {
+  GAMEPLAY
+  STORY
+  MUSIC
+  DESIGN
+  UIUX
+  ANIMATION
+}
+
+enum TaskSpace {
+  BACKLOG
+  READY
+  DESIGN
+  DOING
+  ONHOLD
+  TEST
+  DONE
+}
+
+model Idea {
+  // Identity
+  id Int @id @default(autoincrement())
+
+  // Fields
+  title String?
+  content String
+  category IdeaCategory
+  tags String[]
+
+  // Relations
+  gameSpaceId Int
+  gameSpace GameSpace @relation(fields: [gameSpaceId], references: [id])
+  
+  tasks Task[]
+}
+
+model Task {
+  id Int @id @default(autoincrement())
+
+  // Fields
+  title String
+  content String
+  space TaskSpace
+
+  // Relations
+  gameSpaceId Int
+  gameSpace GameSpace @relation(fields: [gameSpaceId], references: [id])
+  ideaId Int?
+  idea Idea? @relation(fields: [ideaId], references: [id])
 }

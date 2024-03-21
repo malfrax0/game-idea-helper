@@ -1,0 +1,51 @@
+type Tag {
+    tag: String!
+    color: String
+}
+
+type CreationSpace {
+    id: ID!
+    creationDate: DateTimeISO!
+    color: String
+
+    spaces: [GameSpace!]
+    ideaTags: [Tag!]
+    taskTags: [Tag!]
+}
+
+type GameSpace {
+    id: ID!
+    rejected: Boolean
+
+    themeId: ID!
+    theme: Theme!
+    creationSpaceID: ID!
+    creationSpace: CreationSpace!
+
+    ideas: [Idea!]
+    tasks: [Task!]
+}
+
+type Query {
+    creationSpace(): CreationSpace!
+    gameSpace(): GameSpace!
+
+    allCreationSpace(): [CreationSpace!]!
+    allGameSpaces(where: AllGameSpacesWhereInput!): [GameSpace!]!
+}
+
+type Mutation {
+    createCreationSpace(data: CreateCreationSpaceInput!): CreateCreationSpaceResult!
+    createGameSpace(data: CreateGameSpaceInput!): CreateGameSpaceResult!
+    updateCreationSpace(data: UpdateCreationSpaceInput!): UpdateCreationSpaceResult!
+}
+
+type AllGameSpacesWhereInput {
+    creationSpaceId: ID!
+}
+
+# success type for 'createCreationSpace' mutation
+type CreateCreationSpace {
+    creationSpace: CreationSpace
+}
+

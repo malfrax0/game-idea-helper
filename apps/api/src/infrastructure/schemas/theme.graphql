@@ -6,8 +6,8 @@ type Theme {
 }
 
 type Query {
-    themes: ThemesResult
-    randomThemes(input: RandomThemeWhereInput!): RandomThemesResult
+    themes: [Theme!]!
+    randomThemes(input: RandomThemeWhereInput!): [Theme!]!
 }
 
 type Mutation {
@@ -40,20 +40,5 @@ type UpdateThemeResultSuccess {
     theme: Theme!
 }
 
-type ThemesResultSuccess {
-    themes: [Theme!]!
-}
-
-type ThemeResultSuccess {
-    theme: Theme!
-}
-
-type RandomThemesResultSuccess {
-    themes: [Theme!]!
-}
-
-union ThemeResult = ThemeResultSuccess | NotFoundError | BaseError
-union ThemesResult = ThemesResultSuccess | BaseError
 union CreateThemeResult = CreateThemeResultSuccess | BadRequestError | BaseError
 union UpdateThemeResult = UpdateThemeResultSuccess | BadRequestError | NotFoundError | BaseError
-union RandomThemesResult = RandomThemesResultSuccess | BaseError
