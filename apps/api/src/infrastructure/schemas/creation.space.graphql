@@ -38,6 +38,7 @@ type Mutation {
     createCreationSpace(data: CreateCreationSpaceInput!): CreateCreationSpaceResult!
     createGameSpace(data: CreateGameSpaceInput!): CreateGameSpaceResult!
     updateCreationSpace(data: UpdateCreationSpaceInput!): UpdateCreationSpaceResult!
+    updateGameSpace(data: UpdateGameSpaceInput!): UpdateGameSpaceResult!
 }
 
 type AllGameSpacesWhereInput {
@@ -45,7 +46,26 @@ type AllGameSpacesWhereInput {
 }
 
 # success type for 'createCreationSpace' mutation
-type CreateCreationSpace {
-    creationSpace: CreationSpace
+type CreateCreationSpaceSuccess {
+    creationSpace: CreationSpace!
 }
 
+# success type for 'createGameSpace' mutation
+type CreateGameSpaceSuccess {
+    gameSpace: GameSpace!
+}
+
+# success type for 'updateCreationSpace' mutation
+type UpdateCreationSpaceSuccess {
+    creationSpace: CreationSpace!
+}
+
+# success type for 'updateGameSpace' mutation
+type UpdateGameSpaceSuccess {
+    gameSpace: GameSpace!
+}
+
+union CreateCreationSpaceResult = CreateCreationSpaceResult | BadRequestError | BaseError
+union CreateGameSpaceResult = CreateGameSpaceSuccess | BadRequestError | NotFoundError | BaseError
+union UpdateCreationSpaceResult = UpdateCreationSpaceSuccess | BadRequestError | NotFoundError | BaseError
+union UpdateGameSpaceResult = UpdateGameSpaceSuccess | BadRequestError | NotFoundError | BaseError
