@@ -15,8 +15,8 @@ datasource db {
 
 model Metadata {
   // Identity
-  id  Int @id @default(autoincrement())
-  key String @unique
+  id    Int    @id @default(autoincrement())
+  key   String @unique
   value String
 }
 
@@ -25,7 +25,7 @@ model Theme {
   id Int @id @default(autoincrement())
 
   // Fields
-  theme String @unique
+  theme  String  @unique
   active Boolean @default(true)
 
   // Relations
@@ -34,13 +34,13 @@ model Theme {
 
 model CreationSpace {
   // Identity
-  id Int @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   // Fields
   creationDate DateTime
-  color String?
+  color        String?
 
   // Relations
-  spaces GameSpace[]
+  spaces   GameSpace[]
   ideaTags IdeaTags[]
   taskTags TaskTags[]
 }
@@ -53,26 +53,26 @@ model GameSpace {
   rejected Boolean @default(false)
 
   // Relations
-  themeId Int
-  theme Theme @relation(fields: [themeId], references: [id], onDelete: Cascade)
+  themeId         Int
+  theme           Theme         @relation(fields: [themeId], references: [id], onDelete: Cascade)
   creationSpaceId Int
-  creationSpace CreationSpace @relation(fields: [creationSpaceId], references: [id], onDelete: Cascade)
-  ideas Idea[]
-  tasks Task[]
+  creationSpace   CreationSpace @relation(fields: [creationSpaceId], references: [id], onDelete: Cascade)
+  ideas           Idea[]
+  tasks           Task[]
 }
 
 model IdeaTags {
   // Identity
   id Int @id @default(autoincrement())
-  
+
   // Fields
-  tag String
+  tag   String
   color String?
 
   // Relations
   creationSpaceId Int?
-  creationSpace CreationSpace? @relation(fields: [creationSpaceId], references: [id], onDelete: Cascade)
-  
+  creationSpace   CreationSpace? @relation(fields: [creationSpaceId], references: [id], onDelete: Cascade)
+
   // Constraints
   @@unique([creationSpaceId, tag])
 }
@@ -80,15 +80,15 @@ model IdeaTags {
 model TaskTags {
   // Identity
   id Int @id @default(autoincrement())
-  
+
   // Fields
-  tag String
+  tag   String
   color String?
 
   // Relations
   creationSpaceId Int?
-  creationSpace CreationSpace? @relation(fields: [creationSpaceId], references: [id], onDelete: Cascade)
-  
+  creationSpace   CreationSpace? @relation(fields: [creationSpaceId], references: [id], onDelete: Cascade)
+
   // Constraints
   @@unique([creationSpaceId, tag])
 }
@@ -117,15 +117,15 @@ model Idea {
   id Int @id @default(autoincrement())
 
   // Fields
-  title String?
-  content String
+  title    String?
+  content  String
   category IdeaCategory
-  tags String[]
+  tags     String[]
 
   // Relations
   gameSpaceId Int
-  gameSpace GameSpace @relation(fields: [gameSpaceId], references: [id])
-  
+  gameSpace   GameSpace @relation(fields: [gameSpaceId], references: [id])
+
   tasks Task[]
 }
 
@@ -133,13 +133,13 @@ model Task {
   id Int @id @default(autoincrement())
 
   // Fields
-  title String
+  title   String
   content String
-  space TaskSpace
+  space   TaskSpace
 
   // Relations
   gameSpaceId Int
-  gameSpace GameSpace @relation(fields: [gameSpaceId], references: [id])
-  ideaId Int?
-  idea Idea? @relation(fields: [ideaId], references: [id])
+  gameSpace   GameSpace @relation(fields: [gameSpaceId], references: [id])
+  ideaId      Int?
+  idea        Idea?     @relation(fields: [ideaId], references: [id])
 }

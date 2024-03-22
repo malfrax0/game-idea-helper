@@ -1,6 +1,7 @@
 import { Theme } from "@prisma/client"
 import { SafeParseError, z } from "zod";
 import { DomainError, issueToDomainError } from "../../infrastructure/error";
+import { IEntity } from "./type";
 
 interface DomainTheme {
     id: string,
@@ -14,22 +15,22 @@ const schema = z.object({
     active: z.boolean().optional()
 });
 
-export default {
-    toRaw: (domainValue: DomainTheme) => {
+const ThemeEntity: IEntity<DomainTheme, Theme> = {
+    toRaw: (domainValue) => {
         return {
             id: parseInt(domainValue.id),
             theme: domainValue.theme,
             active: domainValue.active
         }
     },
-    toDomain: (rawValue: Theme) => {
+    toDomain: (rawValue) => {
         return {
             id: rawValue.id.toString(),
             theme: rawValue.theme,
             active: rawValue.active
         }
     },
-    check: (value: DomainTheme) => {
+    check: (value) => {
         const result = schema.safeParse(value);
         if (!result.success) {
             const errorResult = result as SafeParseError<typeof schema._input>;   
@@ -43,5 +44,9 @@ export default {
                 }
             })
         }
-    }
+        return  value;
+    },
+    schema
 }
+
+export default ThemeEntity;
