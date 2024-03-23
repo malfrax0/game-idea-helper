@@ -1,4 +1,4 @@
-import { GameSpace, Idea, Prisma, Theme } from "@prisma/client";
+import { Idea, Prisma, Theme } from "@prisma/client";
 import { SafeParseError, z } from "zod";
 import { IEntity } from "./type";
 import { DomainError, issueToDomainError } from "../../infrastructure/error";
