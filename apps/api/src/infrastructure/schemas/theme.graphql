@@ -11,8 +11,8 @@ type Query {
 }
 
 type Mutation {
-    createTheme(data: CreateThemeInput!): CreateThemeResultSuccess
-    updateTheme(where: ThemeWhereInput!, data: UpdateThemeInput!): UpdateThemeResultSuccess
+    createTheme(data: CreateThemeInput!): CreateThemeResult!
+    updateTheme(where: ThemeWhereInput!, data: UpdateThemeInput!): UpdateThemeResult!
 }
 
 input ThemeWhereInput {
@@ -36,9 +36,13 @@ type CreateThemeResultSuccess {
     theme: Theme!
 }
 
+type ThemeAlreadyExistsError {
+    message: String!
+}
+
 type UpdateThemeResultSuccess {
     theme: Theme!
 }
 
-union CreateThemeResult = CreateThemeResultSuccess | BadRequestError | BaseError
-union UpdateThemeResult = UpdateThemeResultSuccess | BadRequestError | NotFoundError | BaseError
+union CreateThemeResult = CreateThemeResultSuccess | ThemeAlreadyExistsError | BadRequestError | BaseError
+union UpdateThemeResult = UpdateThemeResultSuccess | ThemeAlreadyExistsError | BadRequestError | NotFoundError | BaseError

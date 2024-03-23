@@ -1,3 +1,5 @@
+scalar DateTimeISO
+
 type Tag {
     tag: String!
     color: String
@@ -17,31 +19,66 @@ type GameSpace {
     id: ID!
     rejected: Boolean
 
-    themeId: ID!
-    theme: Theme!
-    creationSpaceID: ID!
-    creationSpace: CreationSpace!
+    themeId: ID
+    theme: Theme
+    creationSpaceID: ID
+    creationSpace: CreationSpace
 
     ideas: [Idea!]
-    tasks: [Task!]
+    # tasks: [Task!]
 }
 
 type Query {
-    creationSpace(): CreationSpace!
-    gameSpace(): GameSpace!
+    creationSpace(where: CreationSpaceWhere!): CreationSpace!
+    gameSpace(where: GameSpaceWhere!): GameSpace!
 
-    allCreationSpace(): [CreationSpace!]!
+    allCreationSpace: [CreationSpace!]!
     allGameSpaces(where: AllGameSpacesWhereInput!): [GameSpace!]!
 }
 
 type Mutation {
     createCreationSpace(data: CreateCreationSpaceInput!): CreateCreationSpaceResult!
     createGameSpace(data: CreateGameSpaceInput!): CreateGameSpaceResult!
-    updateCreationSpace(data: UpdateCreationSpaceInput!): UpdateCreationSpaceResult!
-    updateGameSpace(data: UpdateGameSpaceInput!): UpdateGameSpaceResult!
+    updateCreationSpace(where: UpdateGameSpaceWhere, data: UpdateCreationSpaceInput!): UpdateCreationSpaceResult!
+    updateGameSpace(where: UpdateGameSpaceWhere, data: UpdateGameSpaceInput!): UpdateGameSpaceResult!
 }
 
-type AllGameSpacesWhereInput {
+input CreateCreationSpaceInput {
+    color: String
+    themes: [ID!]!
+}
+
+input CreateGameSpaceInput {
+    creationSpaceId: ID!
+    themeId: ID!
+}
+
+input UpdateCreationSpaceWhere {
+    id: ID!
+}
+
+
+input UpdateCreationSpaceInput {
+    color: String
+}
+
+input UpdateGameSpaceWhere {
+    id: ID!
+}
+
+input UpdateGameSpaceInput {
+    rejected: Boolean
+}
+
+input CreationSpaceWhere {
+    id: ID!
+}
+
+input GameSpaceWhere {
+    id: ID!
+}
+
+input AllGameSpacesWhereInput {
     creationSpaceId: ID!
 }
 
@@ -65,7 +102,15 @@ type UpdateGameSpaceSuccess {
     gameSpace: GameSpace!
 }
 
-union CreateCreationSpaceResult = CreateCreationSpaceResult | BadRequestError | BaseError
+type CreationSpaceNotFoundError {
+    message: String!
+}
+
+type GameSpaceNotFoundError {
+    message: String!
+}
+
+union CreateCreationSpaceResult = CreateCreationSpaceSuccess | BadRequestError | BaseError
 union CreateGameSpaceResult = CreateGameSpaceSuccess | BadRequestError | NotFoundError | BaseError
-union UpdateCreationSpaceResult = UpdateCreationSpaceSuccess | BadRequestError | NotFoundError | BaseError
-union UpdateGameSpaceResult = UpdateGameSpaceSuccess | BadRequestError | NotFoundError | BaseError
+union UpdateCreationSpaceResult = UpdateCreationSpaceSuccess | CreationSpaceNotFoundError | BadRequestError | NotFoundError | BaseError
+union UpdateGameSpaceResult = UpdateGameSpaceSuccess | GameSpaceNotFoundError | BadRequestError | NotFoundError | BaseError

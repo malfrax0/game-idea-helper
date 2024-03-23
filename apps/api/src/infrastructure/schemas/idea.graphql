@@ -1,0 +1,67 @@
+
+enum IdeaCategory {
+  GAMEPLAY
+  STORY
+  MUSIC
+  DESIGN
+  UIUX
+  ANIMATION
+}
+
+type Idea {
+    id: ID!
+
+    title: String,
+    content: String,
+    category: IdeaCategory
+    
+    gameSpaceId: ID
+    gameSpace: GameSpace
+}
+
+type Mutation {
+    createIdea(data: CreateIdeaInput!): CreateIdeaResult!
+    updateIdea(where: UpdateIdeaWhere!, data: UpdateIdeaInput!): UpdateIdeaResult!
+    deleteIdea(where: DeleteIdeaWhere!): DeleteIdeaResult!
+}
+
+input CreateIdeaInput {
+    title: String!,
+    content: String,
+    category: IdeaCategory!,
+
+    gameSpaceId: ID!
+}
+
+input UpdateIdeaWhere {
+    id: ID!
+}
+
+input UpdateIdeaInput {
+    title: String,
+    content: String,
+    category: IdeaCategory
+}
+
+input DeleteIdeaWhere {
+    id: ID!
+}
+
+# success type for 'createIdea' mutation
+type CreateIdeaSuccess {
+    idea: Idea!
+}
+
+# success type for 'updateIdea' mutation
+type UpdateIdeaSuccess {
+    idea: Idea!
+}
+
+# success type for 'deleteIdea' mutation
+type DeleteIdeaSuccess {
+    idea: Idea!
+}
+
+union CreateIdeaResult = CreateIdeaSuccess | BadRequestError | BaseError
+union UpdateIdeaResult = UpdateIdeaSuccess | NotFoundError | BadRequestError | BaseError
+union DeleteIdeaResult = DeleteIdeaSuccess | NotFoundError | BaseError

@@ -20,30 +20,26 @@
 		"prefix": "error",
 		"body": [
 			"$LINE_COMMENT error type for '$1' mutation",
-			"type $2 extends BaseError {",
-			"\tcode: String!",
+			"type $2 {",
 			"\tmessage: String!",
 			"}"
 		]
 	},
-	"successtype": {
+	"mutationsuccesstype": {
 		"scope": "graphql",
-		"prefix": "success",
+		"prefix": "mutation-success",
 		"body": [
 			"$LINE_COMMENT success type for '$1' mutation",
-			"type ${1/^(.)(.*)$/${1:/upcase}${2}/} {",
-			"\t$2",
+			"type ${1/^(.)(.*)$/${1:/upcase}${2}/}Success {",
+			"\t$2: ${2/^(.)(.*)$/${1:/upcase}${2}/}!",
 			"}"
 		]
 	},
-	"createsuccesstype": {
+	"unionresult": {
 		"scope": "graphql",
-		"prefix": "create-success",
+		"prefix": "union-result",
 		"body": [
-			"$LINE_COMMENT success type for '$1' mutation",
-			"type ${1/^(.)(.*)$/${1:/upcase}${2}/} {",
-			"\t$2: ${2/^(.)(.*)$/${1:/upcase}${2}/}",
-			"}"
+			"union ${1/^(.)(.*)$/${1:/upcase}${2}/}Result = ${1/^(.)(.*)$/${1:/upcase}${2}/}Success ${2:| NotFoundError} ${3:| }| BadRequestError | BaseError"
 		]
 	}
 }

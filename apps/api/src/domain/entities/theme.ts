@@ -1,16 +1,15 @@
-import { Theme } from "@prisma/client"
+import { Prisma, Theme } from "@prisma/client"
 import { SafeParseError, z } from "zod";
 import { DomainError, issueToDomainError } from "../../infrastructure/error";
 import { IEntity } from "./type";
 
-interface DomainTheme {
-    id: string,
+export interface DomainTheme {
+    id?: string,
     theme: string,
     active: boolean
 }
 
 const schema = z.object({
-    id: z.string(),
     theme: z.string().min(3),
     active: z.boolean().optional()
 });
@@ -44,7 +43,8 @@ const ThemeEntity: IEntity<DomainTheme, Theme> = {
                 }
             })
         }
-        return  value;
+
+        return { ...value, ...result.data };
     },
     schema
 }

@@ -32,13 +32,18 @@ export async function execFnAndReturnError<T>(unionResult: UnionResult, fn: () =
     catch (err) {
         const code = err?.code;
         if (code) {
-            const unionError = unionResult.errors.find((itUnionError) => itUnionError.code === code);
+            const unionError = unionResult.errors.find((itUnionError) => itUnionError.errorCodes.includes(code));
             if (unionError) {
                 return unionError;
             }
         }
+
+        console.log({
+            message: err.message
+        })
+
         return {
-            __typename: "GenericError",
+            __typename: "BaseError",
             code: "INTERNAL_SERVER_ERROR",
             message: "Internal server error."
         }

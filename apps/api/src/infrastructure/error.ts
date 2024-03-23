@@ -10,6 +10,7 @@ export class BaseError extends Error {
         this.type = type;
         this.code = code;
         this.payload = payload;
+        console.log({type, code, message, payload});
     }
 }
 
