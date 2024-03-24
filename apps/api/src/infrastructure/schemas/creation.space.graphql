@@ -45,7 +45,7 @@ type Mutation {
 
 input CreateCreationSpaceInput {
     color: String
-    themes: [ID!]!
+    themeIds: [ID!]!
 }
 
 input CreateGameSpaceInput {
